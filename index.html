@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bootstrap Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <style>
+    #userInput {
+        width: 300px;
+        height: 200px;
+
+        margin-top: 80px;
+        float: right;
+    }
+
+    button {
+        margin: 10px;
+        background-color: #8f7c7c;
+    }
+
+    img {
+        width: 200px;
+        height: 200px;
+        float: left;
+        margin: 15px;
+        padding: 10px
+    }
+
+    #topicDiv {
+        width: 200px;
+        height: 200px;
+        float: left;
+        margin: 10px;
+    }
+
+    p {
+        margin: -10px;
+        text-align: center;
+    }
+
+    #submit {
+        background-color: #8f7c7c;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- take a string array with string -->
+    <!-- crete buttons for all array elements -->
+    <div class="container">
+        <div class="row">
+            <div id="createButton">
+            </div>
+        </div>
+        <div clas='row'>
+            <div class="col-md-8">
+                <div id='addGifHere'>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div id="userInput">
+                    <div class="form-group">
+                        <label for="userTopic">Add a Topic</label>
+                        <input type="text" class="form-control" id="userTopic" placeholder="topic">
+                    </div>
+                    <button type="submit" class="btn btn-default" id='submit'>Submit</button>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        var topics = ['white flowers', 'red flowers', 'yellow flowers', 'peacocks', 'birds', 'ducks', 'rabbits', 'sea', 'river', 'waterfalls', 'lion', 'tiger', 'penguin', 'parrot'];
+
+        $('#submit').on('click', function() {
+            var value = $('#userTopic').val();
+            console.log(value);
+            topics.push(value);
+            console.log(topics);
+            $('#createButton').empty();
+            createButton();
+            $('input').val("");
+        });
+
+        function createButton() {
+            for (var i = 0; i < topics.length; i++) {
+                var buttonAdd = $('<button>').attr('data-topic', topics[i]).text(topics[i]).attr('data-topic', topics[i]);
+                $("#createButton").append(buttonAdd);
+
+
+
+            }
+
+        }
+        createButton();
+        $('button').on('click', function() {
+            var currentButton = $(this).attr('data-topic');
+            //console.log(currentButton);
+            var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                currentButton + "&api_key=CNIkzkyy2L89tZ9JhKwfNipP1RzAuGM8&limit=10"
+
+
+            $.ajax({
+                url: queryURL,
+                method: 'GET'
+            }).then(function(response) {
+                //console.log(response);
+                var results = response.data;
+
+                for (var i = 0; i < 10; i++) {
+                    var topicDiv = $('<div id="topicDiv">');
+                    var p = $('<p>').text("Rating: " + results[i].rating);
+                    //console.log(results.rating);
+                    var topicImg = $('<img>');
+                    topicImg.attr('src', results[i].images.fixed_height_small_still.url);
+                    console.log(results[i].images.fixed_height_small_still.url)
+                    topicImg.attr('data-still', results[i].images.fixed_height_small_still.url)
+                    topicImg.attr('data-animate', results[i].images.fixed_height.url);
+                    console.log(results[i].images.fixed_height.url)
+                    topicImg.attr('data-state', 'still');
+                    topicImg.addClass('gif')
+                    topicDiv.append(p);
+                    topicDiv.append(topicImg);
+                    $('#addGifHere').append(topicDiv);
+
+                }
+
+
+
+
+            });
+            $('#addGifHere').empty();
+
+
+        });
+
+        $(document).on("click", ".gif", function() {
+            console.log("clicked Gif")
+            state = $(this).attr('data-state');
+            console.log(state);
+            if (state === 'still') {
+                var dataAnimate = $(this).attr('data-animate')
+                console.log(dataAnimate);
+                $(this).attr('src', dataAnimate);
+                $(this).attr('data-state', 'animate');
+
+
+            } else {
+                (state === 'animate')
+                var srcAttribute = $(this).attr('data-still');
+                $(this).attr('src', srcAttribute);
+                $(this).attr('data-state', 'still');
+            }
+
+        });
+        </script>
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+
+</html>
