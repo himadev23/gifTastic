@@ -75,6 +75,8 @@
         function createButton() {
             for (var i = 0; i < topics.length; i++) {
                 var buttonAdd = $('<button>').attr('data-topic', topics[i]).text(topics[i]).attr('data-topic', topics[i]).addClass('addbutton');
+
+
                 $("#createButton").append(buttonAdd);
             }
 
@@ -83,21 +85,20 @@
 
         $('#submit').on('click', function() {
             var value = $('#userTopic').val();
-            if(isNaN(value)){
-                console.log('enter valid value');
-            
-            console.log(value);
-            topics.push(value);
-            console.log(topics);
-            $('#createButton').empty();
-            createButton();
-            $('input').val("");
-        }
-        else{
-            console.log('enter valid number');
-            $('input').val("");
+            var index = topics.indexOf(value);
+            console.log(index);
+            if (isNaN(value) && (topics[index] !== value)) {
+                console.log(value);
+                topics.push(value);
+                console.log(topics);
+                $('#createButton').empty();
+                createButton();
+                $('input').val("");
+            } else {
+                console.log('something');
+                $('input').val("");
 
-        }
+            }
         });
 
 
