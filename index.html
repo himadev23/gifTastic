@@ -81,24 +81,31 @@
         }
         createButton();
 
-            $('#submit').on('click', function() {
+        $('#submit').on('click', function() {
             var value = $('#userTopic').val();
+            if(isNaN(value)){
+                console.log('enter valid value');
+            
             console.log(value);
             topics.push(value);
             console.log(topics);
             $('#createButton').empty();
             createButton();
             $('input').val("");
+        }
+        else{
+            console.log('enter valid number');
+        }
         });
 
 
-        $(document).on('click','.addbutton', function() {
+        $(document).on('click', '.addbutton', function() {
             var currentButton = $(this).attr('data-topic');
             // var currentButton =$(this).val();
             console.log('currentButton' + currentButton);
             add(currentButton);
 
-            });
+        });
 
         $(document).on("click", ".gif", function() {
             console.log("clicked Gif")
@@ -122,7 +129,7 @@
 
         function add(btn) {
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                btn+ "&api_key=CNIkzkyy2L89tZ9JhKwfNipP1RzAuGM8&limit=10"
+                btn + "&api_key=CNIkzkyy2L89tZ9JhKwfNipP1RzAuGM8&limit=10"
 
 
             $.ajax({
