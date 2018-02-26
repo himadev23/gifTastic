@@ -5,6 +5,7 @@
     <title>Bootstrap Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <style>
     #userInput {
         width: 300px;
@@ -68,11 +69,19 @@
                 </div>
             </div>
         </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <script type="text/javascript">
         var topics = ['white flowers', 'red flowers', 'yellow flowers', 'peacocks', 'birds', 'ducks', 'rabbits', 'sea', 'river', 'waterfalls', 'lion', 'tiger', 'penguin', 'parrot'];
 
-        $('#submit').on('click', function() {
+        function createButton() {
+            for (var i = 0; i < topics.length; i++) {
+                var buttonAdd = $('<button>').attr('data-topic', topics[i]).text(topics[i]).attr('data-topic', topics[i]).addClass('addbutton');
+                $("#createButton").append(buttonAdd);
+            }
+
+        }
+        createButton();
+
+            $('#submit').on('click', function() {
             var value = $('#userTopic').val();
             console.log(value);
             topics.push(value);
@@ -82,22 +91,38 @@
             $('input').val("");
         });
 
-        function createButton() {
-            for (var i = 0; i < topics.length; i++) {
-                var buttonAdd = $('<button>').attr('data-topic', topics[i]).text(topics[i]).attr('data-topic', topics[i]);
-                $("#createButton").append(buttonAdd);
+
+        $(document).on('click','.addbutton', function() {
+            var currentButton = $(this).attr('data-topic');
+            // var currentButton =$(this).val();
+            console.log('currentButton' + currentButton);
+            add(currentButton);
+
+            });
+
+        $(document).on("click", ".gif", function() {
+            console.log("clicked Gif")
+            state = $(this).attr('data-state');
+            console.log(state);
+            if (state === 'still') {
+                var dataAnimate = $(this).attr('data-animate')
+                console.log(dataAnimate);
+                $(this).attr('src', dataAnimate);
+                $(this).attr('data-state', 'animate');
 
 
-
+            } else {
+                (state === 'animate')
+                var srcAttribute = $(this).attr('data-still');
+                $(this).attr('src', srcAttribute);
+                $(this).attr('data-state', 'still');
             }
 
-        }
-        createButton();
-        $('button').on('click', function() {
-            var currentButton = $(this).attr('data-topic');
-            //console.log(currentButton);
+        });
+
+        function add(btn) {
             var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-                currentButton + "&api_key=CNIkzkyy2L89tZ9JhKwfNipP1RzAuGM8&limit=10"
+                btn+ "&api_key=CNIkzkyy2L89tZ9JhKwfNipP1RzAuGM8&limit=10"
 
 
             $.ajax({
@@ -126,33 +151,9 @@
                 }
 
 
-
-
             });
             $('#addGifHere').empty();
-
-
-        });
-
-        $(document).on("click", ".gif", function() {
-            console.log("clicked Gif")
-            state = $(this).attr('data-state');
-            console.log(state);
-            if (state === 'still') {
-                var dataAnimate = $(this).attr('data-animate')
-                console.log(dataAnimate);
-                $(this).attr('src', dataAnimate);
-                $(this).attr('data-state', 'animate');
-
-
-            } else {
-                (state === 'animate')
-                var srcAttribute = $(this).attr('data-still');
-                $(this).attr('src', srcAttribute);
-                $(this).attr('data-state', 'still');
-            }
-
-        });
+        }
         </script>
     </div>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
