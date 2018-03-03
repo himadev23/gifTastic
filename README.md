@@ -4,5 +4,9 @@ Description : This project is aimed  to use APIS.By using AJAX, calling external
 
 Technologies Used:HTML,CSS,BOOTSTRAP,JQUERY,AJAX,GIF API.
 
+App Demo:
 
+<img src="./images/Mar-02-2018 21-58-27.gif">
+Ajax cal code screenshorts:
+<img src="./images/Screen Shot 2018-03-02 at 10.02.10 PM.png">
 
